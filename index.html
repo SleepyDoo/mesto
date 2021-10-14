@@ -16,53 +16,53 @@
         <img class="profile__avatar" src="images/profile-kusto.jpg" alt="Аватар профиля">
         <div class="profile__profile-info">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <button class="profile__edit-button" type="button"></button>
             <p class="profile__description">Исследователь океана</p>
-            <button class="profile__edit-button"></button>
         </div>
       </div>
-      <button class="profile__add-button"></button>
+      <button class="profile__add-button" type="button"></button>
     </section>
     <section class="elements">
       <div class="element">
         <img class="element__image" src="images/element-karachaevsk.jpg" alt="Карачаевск">
         <div class="element__info">
           <h3 class="element__name">Карачаевск</h3>
-          <button class="element__like-button"></button>
+          <button class="element__like-button" type="button"></button>
         </div>
       </div>
       <div class="element">
         <img class="element__image" src="images/element-elbrus.jpg" alt="Гора Эльбрус">
         <div class="element__info">
           <h3 class="element__name">Гора Эльбрус</h3>
-          <button class="element__like-button"></button>
+          <button class="element__like-button" type="button"></button>
         </div>
       </div>
       <div class="element">
         <img class="element__image" src="images/element-dombai.jpg" alt="Домбай">
         <div class="element__info">
           <h3 class="element__name">Домбай</h3>
-          <button class="element__like-button"></button>
+          <button class="element__like-button" type="button"></button>
         </div>
       </div>
       <div class="element">
         <img class="element__image" src="images/element-elbrus.jpg" alt="Гора Эльбрус">
         <div class="element__info">
           <h3 class="element__name">Гора Эльбрус</h3>
-          <button class="element__like-button"></button>
+          <button class="element__like-button" type="button"></button>
         </div>
       </div>
       <div class="element">
         <img class="element__image" src="images/element-dombai.jpg" alt="Домбай">
         <div class="element__info">
           <h3 class="element__name">Домбай</h3>
-          <button class="element__like-button"></button>
+          <button class="element__like-button" type="button"></button>
         </div>
       </div>
       <div class="element">
         <img class="element__image" src="images/element-karachaevsk.jpg" alt="Карачаево-Черкессия">
         <div class="element__info">
           <h3 class="element__name">Карачаево-Черкессия</h3>
-          <button class="element__like-button"></button>
+          <button class="element__like-button" type="button"></button>
         </div>
       </div>
     </section>
@@ -72,13 +72,13 @@
   </footer>
   <div class="popup">
     <div class="popup__container">
-      <button class="popup__close-button"></button>
-      <form class="form">
+      <button class="popup__close-button" type="button"></button>
+      <form class="form" name="ProfileInfoForm">
         <h2 class="form__heading">Редактировать профиль</h2>
         <fieldset class="form__fieldset">
-          <input class="form__input form__input_content_name" type="text" placeholder="Имя">
-          <input class="form__input form__input_content_description" type="text" placeholder="Описание">
-          <button class="form__save-button">Сохранить</button>
+          <input class="form__input form__input_content_name" type="text" placeholder="Имя" name="ProfileName">
+          <input class="form__input form__input_content_description" type="text" placeholder="Описание" name="ProfileDescription">
+          <button class="form__save-button" type="submit">Сохранить</button>
         </fieldset>
       </form>
     </div>
