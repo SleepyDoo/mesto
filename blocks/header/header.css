@@ -1,6 +1,5 @@
 .header {
-  /* min-height: 74px; */
-  border-bottom: 2px solid #545454;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
   margin: 0 auto 40px;
 }
 
