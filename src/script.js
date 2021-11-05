@@ -6,6 +6,7 @@ const inputDescription = document.querySelector('.form__input_content_descriptio
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 const editform = document.querySelector('form[name=profile-info-form]');
+const bioSaveButton = popupBio.querySelector('.form__save-button');
 const initialCards = [
   {
     name: 'Котик',
@@ -76,9 +77,9 @@ function deleteMistakes (input, popup) {
 
 editButton.addEventListener('click', function() {
 
-  const saveButton = popupBio.querySelector('.form__save-button');
-  saveButton.removeAttribute('disabled');
-  saveButton.classList.remove('form__save-button_disabled');
+
+  bioSaveButton.removeAttribute('disabled');
+  bioSaveButton.classList.remove('form__save-button_disabled');
   inputName.value = profileName.textContent;
   inputDescription.value = profileDescription.textContent;
 
@@ -94,6 +95,7 @@ const elementsTemplate = document.querySelector('#elements').content;
 const elements = document.querySelector('.elements');
 const addButton = document.querySelector('.profile__add-button');
 const popupElement = document.querySelector('.popup_content_element');
+const elSaveButton = popupElement.querySelector('.form__save-button');
 const newElementClosingButton = document.querySelector('.popup__close-button_content_add-element');
 const inputCardName = document.querySelector('input[name=element-name]');
 const inputImgUrl = document.querySelector('input[name=image-url]');
@@ -118,7 +120,7 @@ function deleteCard(element) {
 function addBigImagePopup(element) {
   const smallImage = element.querySelector('.element__image');
   smallImage.addEventListener('click', function(evt) {
-    const currentName = evt.target.parentElement.querySelector('.element__name');
+    const currentName = evt.target.parentElement.parentElement.querySelector('.element__name');
 
     popupImage.querySelector('.popup__paragraph').textContent = currentName.textContent;
     popupImage.querySelector('.popup__image').src = evt.target.src;
@@ -127,10 +129,12 @@ function addBigImagePopup(element) {
     openPopup(popupImage);
   })
 
-  popupImage.querySelector('.popup__close-button').addEventListener('click', function() {
-  closePopup(popupImage);
-  })
 }
+
+popupImage.querySelector('.popup__close-button').addEventListener('click', function() {
+  closePopup(popupImage);
+})
+
 
 function createCard(name, link) {
   const element = elementsTemplate.querySelector('.element').cloneNode(true);
@@ -167,6 +171,11 @@ addButton.addEventListener('click', function() {
     deleteMistakes(input, popupElement);
   });
   popupElement.querySelector('.form').reset();
+
+
+  elSaveButton.setAttribute('disabled', true);
+  elSaveButton.classList.add('form__save-button_disabled');
+
   openPopup(popupElement);
 })
 
@@ -184,7 +193,7 @@ popupElement.querySelector('.popup__close-button').addEventListener('click', fun
 const popups = document.querySelectorAll('.popup');
 
 popups.forEach(function(popup) {
-popup.addEventListener('click', function(evt) {
+popup.addEventListener('mousedown', function(evt) {
 if (evt.target.classList.contains('popup')) {
   closePopup(popup);
 }
