@@ -33,13 +33,21 @@ const initialCards = [
   }
 ];
 
+function closePopupWithEsc(evt) {
+  if (evt.key === 'Escape') {
+    closePopup(document.querySelector('.popup_opened'));
+  }
+}
+
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', closePopupWithEsc);
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closePopupWithEsc);
 }
 
 // Био профиля
@@ -59,6 +67,9 @@ popupBio.querySelector('.popup__close-button').addEventListener('click', functio
 
 
 editButton.addEventListener('click', function() {
+  const saveButton = popupBio.querySelector('.form__save-button');
+  saveButton.removeAttribute('disabled');
+  saveButton.classList.remove('form__save-button_disabled');
   inputName.value = profileName.textContent;
   inputDescription.value = profileDescription.textContent;
   openPopup(popupBio);
@@ -121,6 +132,8 @@ function createCard(name, link) {
 
   addBigImagePopup(element);
 
+
+
   return element;
 }
 
@@ -149,5 +162,15 @@ newCardForm.addEventListener('submit', function(evt) {
 popupElement.querySelector('.popup__close-button').addEventListener('click', function() {
   closePopup(popupElement);
   })
+
+const popups = document.querySelectorAll('.popup');
+
+popups.forEach(function(popup) {
+popup.addEventListener('click', function(evt) {
+if (evt.target.classList.contains('popup')) {
+  closePopup(popup);
+}
+})
+})
 
 
