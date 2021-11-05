@@ -63,15 +63,28 @@ editform.addEventListener('submit', submitProfileBio);
 
 popupBio.querySelector('.popup__close-button').addEventListener('click', function() {
   closePopup(popupBio);
+
 })
 
+function deleteMistakes (input, popup) {
+  if (input.classList.contains(formsSettings.inputErrorClass)) {
+    const error = popup.querySelector(`#${input.id}-error`);
+    input.classList.remove(formsSettings.inputErrorClass);
+    error.textContent = '';
+  }
+}
 
 editButton.addEventListener('click', function() {
+
   const saveButton = popupBio.querySelector('.form__save-button');
   saveButton.removeAttribute('disabled');
   saveButton.classList.remove('form__save-button_disabled');
   inputName.value = profileName.textContent;
   inputDescription.value = profileDescription.textContent;
+
+  deleteMistakes(inputName, popupBio);
+  deleteMistakes(inputDescription, popupBio);
+
   openPopup(popupBio);
 });
 
@@ -150,6 +163,10 @@ initialCards.reverse().forEach(function(card) {
 })
 
 addButton.addEventListener('click', function() {
+  popupElement.querySelectorAll('.form__input').forEach(function(input) {
+    deleteMistakes(input, popupElement);
+  });
+  popupElement.querySelector('.form').reset();
   openPopup(popupElement);
 })
 
@@ -160,6 +177,7 @@ newCardForm.addEventListener('submit', function(evt) {
 })
 
 popupElement.querySelector('.popup__close-button').addEventListener('click', function() {
+
   closePopup(popupElement);
   })
 

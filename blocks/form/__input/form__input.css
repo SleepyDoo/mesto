@@ -10,9 +10,9 @@
 
 }
 
-.form__input:first-of-type {
+/* .form__input:first-of-type {
   margin-bottom: 30px;
-}
+} */
 
 @media screen and (max-width: 767px) {
   .form__input {

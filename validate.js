@@ -10,8 +10,10 @@ const formsSettings = {
 function enableValidation(objSettings) {
   const forms = Array.from(document.querySelectorAll(objSettings.formSelector));
 
+
+
   forms.forEach(function(form) {
-  setEventListeners(form, objSettings);
+    setEventListeners(form, objSettings);
   })
 }
 
@@ -36,25 +38,22 @@ function setEventListeners(form, objSettings) {
 
 
 function checkInputValidity(input, form, objSettings) {
-  if (!input.validity.valid) {
-    showInputError(input, form, objSettings);
-  }
-  else {
+  if (input.validity.valid) {
     hideInputError(input, form, objSettings)
+  } else {
+    showInputError(input, form, objSettings);
   }
 }
 
 
 function showInputError(input, form, objSettings) {
   const error = form.querySelector(`#${input.id}-error`);
-  console.log(error);
   input.classList.add(objSettings.inputErrorClass);
   error.textContent = input.validationMessage;
 }
 
 function hideInputError(input, form, objSettings) {
   const error = form.querySelector(`#${input.id}-error`);
-  console.log(error);
   input.classList.remove(objSettings.inputErrorClass);
   error.textContent = '';
 }
