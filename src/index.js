@@ -37,15 +37,14 @@ const inputDescription = document.querySelector('.form__input_content_descriptio
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 const editform = document.querySelector('form[name=profile-info-form]');
-const bioSaveButton = popupBio.querySelector('.form__save-button');
 
 const addButton = document.querySelector('.profile__add-button');
 const popupElement = document.querySelector('.popup_content_element');
-const elSaveButton = popupElement.querySelector('.form__save-button');
 const inputCardName = document.querySelector('input[name=element-name]');
 const inputImgUrl = document.querySelector('input[name=image-url]');
 const newCardForm = document.querySelector('form[name=new-card-form]');
 const popupImage = document.querySelector('.popup_content_big-image');
+
 
 // Работа с попапами
 
@@ -82,59 +81,72 @@ popupBio.querySelector('.popup__close-button').addEventListener('click', functio
 
 })
 
-function deleteMistakes (input, popup) {
-  if (input.classList.contains(formsSettings.inputErrorClass)) {
-    const error = popup.querySelector(`#${input.id}-error`);
-    input.classList.remove(formsSettings.inputErrorClass);
-    error.textContent = '';
-  }
-}
-
 editButton.addEventListener('click', function() {
-
-
-  bioSaveButton.removeAttribute('disabled');
-  bioSaveButton.classList.remove('form__save-button_disabled');
 
   inputName.value = profileName.textContent;
   inputDescription.value = profileDescription.textContent;
-
-  deleteMistakes(inputName, popupBio);
-  deleteMistakes(inputDescription, popupBio);
-
+  formValidators[editform.name].resetValidation();
   openPopup(popupBio);
 });
 
+// Формы
+
+const formsSettings = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__save-button',
+  inactiveButtonClass: 'form__save-button_disabled',
+  inputErrorClass: 'form__input_type_error',
+  errorClass: 'form__error_visible'
+};
+
+const formValidators = {}
+
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((form) => {
+    const validateForm = new FormValidator(config, form);
+    formValidators[ form.name ] = validateForm;
+    validateForm.enableValidation();
+  });
+};
+
+enableValidation(formsSettings);
 
 // Работа с карточками
+
+function handleCardClick(name, link) {
+  this._popupImage.querySelector('.popup__paragraph').textContent = name;
+      this._popupImage.querySelector('.popup__image').src = link;
+      this._popupImage.querySelector('.popup__image').alt = name;
+
+      openPopup(this._popupImage);
+}
 
 popupImage.querySelector('.popup__close-button').addEventListener('click', function() {
   closePopup(popupImage);
 })
 
-function addNewCard(place, data, template) {
+function createCard(data, template) {
+  return new Card(data, template, handleCardClick);
+}
 
-  const element = new Card(data, template);
+function prependNewCard(place, data, template) {
+
+  const element = createCard(data, template);
 
   place.prepend(element.createCard());
 
 }
 
 initialCards.reverse().forEach(function(card) {
-  addNewCard(elements, card, elementsTemplate);
+  prependNewCard(elements, card, elementsTemplate);
 })
 
 
 addButton.addEventListener('click', function() {
-  popupElement.querySelectorAll('.form__input').forEach(function(input) {
-    deleteMistakes(input, popupElement);
-  });
-  popupElement.querySelector('.form').reset();
-
-
-  elSaveButton.setAttribute('disabled', true);
-  elSaveButton.classList.add('form__save-button_disabled');
-
+  formValidators[newCardForm.name].resetValidation();
+  newCardForm.reset();
   openPopup(popupElement);
 })
 
@@ -146,7 +158,7 @@ newCardForm.addEventListener('submit', function(evt) {
     link: inputImgUrl.value
   }
 
-  addNewCard(elements, cardData, elementsTemplate);
+  prependNewCard(elements, cardData, elementsTemplate);
   closePopup(popupElement);
 })
 
@@ -165,22 +177,3 @@ if (evt.target.classList.contains('popup')) {
 }
 })
 })
-
-// Формы
-
-const formsSettings = {
-  formSelector: '.form',
-  inputSelector: '.form__input',
-  submitButtonSelector: '.form__save-button',
-  inactiveButtonClass: 'form__save-button_disabled',
-  inputErrorClass: 'form__input_type_error',
-  errorClass: 'form__error_visible'
-};
-
-  const forms = Array.from(document.querySelectorAll(formsSettings.formSelector));
-
-  forms.forEach(function(form) {
-    const formElement = new FormValidator(formsSettings, form);
-
-    formElement.enableValidation();
-  })
