@@ -3,7 +3,6 @@ export default class Card {
     this._name = data.name,
     this._image = data.link,
     this._template = template,
-    this._popupImage = document.querySelector('.popup_content_big-image'),
     this._element = template.querySelector('.element').cloneNode(true),
     this._smallImage = this._element.querySelector('.element__image'),
     this._likeButton = this._element.querySelector('.element__like-button'),

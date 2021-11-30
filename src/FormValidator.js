@@ -7,6 +7,7 @@ export default class FormValidator {
     this._inputErrorClass = settings.inputErrorClass,
     this._errorClass = settings.errorClass,
     this._form = form,
+    this._button = this._form.querySelector(this._submitButtonSelector),
     this._inputs = Array.from(this._form.querySelectorAll(this._inputSelector))
 }
 
@@ -71,9 +72,8 @@ _handleSubmit(evt) {
 }
 
 _toggleButtonState() {
-  const button = this._form.querySelector(this._submitButtonSelector);
-  button.disabled = !this._form.checkValidity();
-  button.classList.toggle(this._inactiveButtonClass, !this._form.checkValidity());
+  this._button.disabled = !this._form.checkValidity();
+  this._button.classList.toggle(this._inactiveButtonClass, !this._form.checkValidity());
 }
 
 }
