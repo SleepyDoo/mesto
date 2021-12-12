@@ -1,5 +1,11 @@
-import Card from "./Card.js";
-import FormValidator from "./FormValidator.js";
+import Card from "./components/Card.js";
+import FormValidator from "./components/FormValidator.js";
+import Section from './components/Section.js';
+import UserInfo from "./components/UserInfo.js";
+import Popup from "./components/Popup.js";
+import PopupWithImage from "./components/PopupWithImage.js";
+import PopupWithForm from "./components/PopupWithForm.js";
+import './pages/index.css';
 
 
 const initialCards = [
@@ -45,44 +51,26 @@ const inputImgUrl = document.querySelector('input[name=image-url]');
 const newCardForm = document.querySelector('form[name=new-card-form]');
 const popupImage = document.querySelector('.popup_content_big-image');
 
-
-// Работа с попапами
-
-function closePopupWithEsc(evt) {
-  if (evt.key === 'Escape') {
-    closePopup(document.querySelector('.popup_opened'));
-  }
-}
-
-
-export function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown', closePopupWithEsc);
-}
-
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closePopupWithEsc);
-}
-
 // Био профиля
 
-function submitProfileBio (evt) {
-  evt.preventDefault();
-  profileName.textContent = inputName.value;
-  profileDescription.textContent = inputDescription.value;
-  closePopup(popupBio);
-}
+const profileBio = new UserInfo({nameElement: profileName, descriptionElement: profileDescription});
+const popupBioClass = new PopupWithForm(popupBio, {submitCallback: () => {
+  profileBio.setUserInfo();
+  popupBioClass.close();
+}})
 
-editform.addEventListener('submit', submitProfileBio);
+popupBioClass.setEventListeners();
 
 editButton.addEventListener('click', function() {
-
-  inputName.value = profileName.textContent;
-  inputDescription.value = profileDescription.textContent;
+  const data = profileBio.getUserInfo();
+  inputName.value = data.name;
+  inputDescription.value = data.description;
   formValidators[editform.name].resetValidation();
-  openPopup(popupBio);
+  popupBioClass.open();
 });
+
+
+
 
 // Формы
 
@@ -108,60 +96,52 @@ const enableValidation = (config) => {
 
 enableValidation(formsSettings);
 
+
+
+
 // Работа с карточками
 
 function handleCardClick(name, link) {
-  popupImage.querySelector('.popup__paragraph').textContent = name;
-      popupImage.querySelector('.popup__image').src = link;
-      popupImage.querySelector('.popup__image').alt = name;
-
-      openPopup(popupImage);
+  const popupWithImage = new PopupWithImage(popupImage);
+  popupWithImage.open(name, link);
+  popupWithImage.setEventListeners();
 }
 
-function createCard(data, template) {
-  return new Card(data, template, handleCardClick).createCard();
-}
+const newCardPopupClass = new PopupWithForm(newCardPopup, {submitCallback: () => {
+  const cardData = [{
+    name: inputCardName.value,
+    link: inputImgUrl.value
+  }]
 
-function prependNewCard(place, data, template) {
+  const newCardList = new Section({
+    items: cardData,
+    renderer: (item) => {
+      const card = new Card(item, elementsTemplate, handleCardClick);
+      const cardElement = card.createCard();
+      newCardList.addItem(cardElement);
+    }
+  },
+  elements);
+  newCardList.renderItems();
+  newCardPopupClass.close();
+}});
 
-  const element = createCard(data, template);
-
-  place.prepend(element);
-
-}
-
-initialCards.reverse().forEach(function(card) {
-  prependNewCard(elements, card, elementsTemplate);
-})
-
+newCardPopupClass.setEventListeners();
 
 addButton.addEventListener('click', function() {
   newCardForm.reset();
   formValidators[newCardForm.name].resetValidation();
-  openPopup(newCardPopup);
+  newCardPopupClass.open();
 })
 
-newCardForm.addEventListener('submit', function(evt) {
-  evt.preventDefault();
-
-  const cardData = {
-    name: inputCardName.value,
-    link: inputImgUrl.value
+const initialCardList = new Section({
+  items: initialCards.reverse(),
+  renderer: (item) => {
+    const card = new Card(item, elementsTemplate, handleCardClick);
+    const cardElement = card.createCard();
+    initialCardList.addItem(cardElement);
   }
+  },
+  elements);
 
-  prependNewCard(elements, cardData, elementsTemplate);
-  closePopup(newCardPopup);
-})
-
-const popups = document.querySelectorAll('.popup');
-
-popups.forEach(function(popup) {
-popup.addEventListener('mousedown', function(evt) {
-if (evt.target.classList.contains('popup')) {
-  closePopup(popup);
-}
-if (evt.target.classList.contains("popup__close-button")) {
-  closePopup(popup);
-}
-})
-})
+  initialCardList.renderItems();

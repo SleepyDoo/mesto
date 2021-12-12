@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="pages/index.css">
   <title>Mesto</title>
 </head>
 <body class="page">
   <header class="header">
-    <img class="header__logo" src="images/logo.svg" alt="Логотип">
+    <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Логотип">
   </header>
   <main>
     <section class="profile">
       <div class="profile__main">
-        <img class="profile__avatar" src="images/profile-avatar.jpg" alt="Аватар профиля">
+        <img class="profile__avatar" src="<%=require('./images/profile-avatar.jpg')%>" alt="Аватар профиля">
         <div class="profile__profile-info">
             <h1 class="profile__name">Вика Ветер</h1>
             <button class="profile__edit-button" type="button"></button>
@@ -76,8 +75,5 @@
         <button class="element__delete-icon"></button>
       </div>
   </template>
-  <script type="module" src="src/index.js"></script>
-  <script type="module" src="src/FormValidator.js"></script>
-  <script type="module" src="src/Card.js"></script>
 </body>
 </html>
