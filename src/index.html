@@ -32,9 +32,9 @@
       <form class="form" name="profile-info-form" novalidate>
         <h2 class="form__heading">Редактировать профиль</h2>
         <fieldset class="form__fieldset">
-          <input class="form__input form__input_content_name" id="profile-name-input" type="text" placeholder="Имя" name="profile-name" required minlength="2" maxlength="40">
+          <input class="form__input form__input_content_name" id="profile-name-input" type="text" placeholder="Имя" name="name" required minlength="2" maxlength="40">
           <span class="form__error" id="profile-name-input-error"></span>
-          <input class="form__input form__input_content_description" id="description-input" type="text" placeholder="Описание" name="profile-description" required minlength="2" maxlength="200">
+          <input class="form__input form__input_content_description" id="description-input" type="text" placeholder="Описание" name="description" required minlength="2" maxlength="200">
           <span class="form__error" id="description-input-error"></span>
           <button class="form__save-button" type="submit">Сохранить</button>
         </fieldset>
@@ -47,9 +47,9 @@
       <form class="form" name="new-card-form" novalidate>
         <h2 class="form__heading">Новое место</h2>
         <fieldset class="form__fieldset">
-          <input class="form__input" id="element-name-input" type="text" placeholder="Название" name="element-name" required maxlength="30" minlength="2">
+          <input class="form__input" id="element-name-input" type="text" placeholder="Название" name="name" required maxlength="30" minlength="2">
           <span class="form__error" id="element-name-input-error"></span>
-          <input class="form__input" id="url-input" type="url" placeholder="Ссылка на картинку" name="image-url" required>
+          <input class="form__input" id="url-input" type="url" placeholder="Ссылка на картинку" name="link" required>
           <span class="form__error" id="url-input-error"></span>
           <button class="form__save-button form__save-button_content_new-element" type="submit">Создать</button>
         </fieldset>

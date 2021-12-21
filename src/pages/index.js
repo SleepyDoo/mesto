@@ -1,11 +1,11 @@
-import Card from "./components/Card.js";
-import FormValidator from "./components/FormValidator.js";
-import Section from './components/Section.js';
-import UserInfo from "./components/UserInfo.js";
-import Popup from "./components/Popup.js";
-import PopupWithImage from "./components/PopupWithImage.js";
-import PopupWithForm from "./components/PopupWithForm.js";
-import './pages/index.css';
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import Section from '../components/Section.js';
+import UserInfo from "../components/UserInfo.js";
+import Popup from "../components/Popup.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import './index.css';
 
 
 const initialCards = [
@@ -54,8 +54,8 @@ const popupImage = document.querySelector('.popup_content_big-image');
 // Био профиля
 
 const profileBio = new UserInfo({nameElement: profileName, descriptionElement: profileDescription});
-const popupBioClass = new PopupWithForm(popupBio, {submitCallback: () => {
-  profileBio.setUserInfo();
+const popupBioClass = new PopupWithForm(popupBio, {submitCallback: (data) => {
+  profileBio.setUserInfo(data);
   popupBioClass.close();
 }})
 
@@ -101,28 +101,37 @@ enableValidation(formsSettings);
 
 // Работа с карточками
 
+let cards;
+
+cards = initialCards.reverse();
+
+const cardList = new Section({
+  items: cards,
+  renderer: (item) => {
+    const card = new Card(item, elementsTemplate, handleCardClick);
+    const cardElement = card.createCard();
+    cardList.addItem(cardElement);
+  }
+  },
+  elements);
+
+
+
+  cardList.renderItems();
+
+const popupWithImage = new PopupWithImage(popupImage);
+
 function handleCardClick(name, link) {
-  const popupWithImage = new PopupWithImage(popupImage);
   popupWithImage.open(name, link);
   popupWithImage.setEventListeners();
 }
 
-const newCardPopupClass = new PopupWithForm(newCardPopup, {submitCallback: () => {
-  const cardData = [{
-    name: inputCardName.value,
-    link: inputImgUrl.value
-  }]
+const newCardPopupClass = new PopupWithForm(newCardPopup, {submitCallback: (data) => {
 
-  const newCardList = new Section({
-    items: cardData,
-    renderer: (item) => {
-      const card = new Card(item, elementsTemplate, handleCardClick);
-      const cardElement = card.createCard();
-      newCardList.addItem(cardElement);
-    }
-  },
-  elements);
-  newCardList.renderItems();
+  cards = [data];
+  console.log(cards);
+  cardList.renderItems();
+  console.log(cardList.renderItems);
   newCardPopupClass.close();
 }});
 
@@ -134,14 +143,5 @@ addButton.addEventListener('click', function() {
   newCardPopupClass.open();
 })
 
-const initialCardList = new Section({
-  items: initialCards.reverse(),
-  renderer: (item) => {
-    const card = new Card(item, elementsTemplate, handleCardClick);
-    const cardElement = card.createCard();
-    initialCardList.addItem(cardElement);
-  }
-  },
-  elements);
 
-  initialCardList.renderItems();
+
