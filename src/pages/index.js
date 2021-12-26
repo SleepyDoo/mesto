@@ -86,9 +86,10 @@ const cardList = new Section({
 
 const popupWithImage = new PopupWithImage(popupImage);
 
+popupWithImage.setEventListeners();
+
 function handleCardClick(name, link) {
   popupWithImage.open(name, link);
-  popupWithImage.setEventListeners();
 }
 
 const newCardPopupClass = new PopupWithForm(newCardPopup, {submitCallback: (data) => {
