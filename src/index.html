@@ -14,6 +14,7 @@
     <section class="profile">
       <div class="profile__main">
         <img class="profile__avatar" src="<%=require('./images/profile-avatar.jpg')%>" alt="Аватар профиля">
+        <div class="profile__avatar-edit-button"></div>
         <div class="profile__profile-info">
             <h1 class="profile__name">Вика Ветер</h1>
             <button class="profile__edit-button" type="button"></button>
@@ -35,7 +36,7 @@
         <fieldset class="form__fieldset">
           <input class="form__input form__input_content_name" id="profile-name-input" type="text" placeholder="Имя" name="name" required minlength="2" maxlength="40">
           <span class="form__error" id="profile-name-input-error"></span>
-          <input class="form__input form__input_content_description" id="description-input" type="text" placeholder="Описание" name="description" required minlength="2" maxlength="200">
+          <input class="form__input form__input_content_description" id="description-input" type="text" placeholder="Описание" name="about" required minlength="2" maxlength="200">
           <span class="form__error" id="description-input-error"></span>
           <button class="form__save-button" type="submit">Сохранить</button>
         </fieldset>
@@ -57,11 +58,40 @@
       </form>
     </div>
   </div>
+
+
+  <div class="popup popup_content_new-avatar">
+    <div class="popup__container">
+      <button class="popup__close-button" type="button"></button>
+      <form class="form form_place_new-avatar" name="new-avatar" novalidate>
+        <h2 class="form__heading">Обновить аватар</h2>
+        <fieldset class="form__fieldset">
+          <input class="form__input" id="new-avatar-input" type="url" placeholder="Ссылка" name="avatar" required>
+          <span class="form__error" id="new-avatar-input-error"></span>
+          <button class="form__save-button form__save-button_content_new-avatar" type="submit">Сохранить</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+
+
   <div class="popup popup_content_big-image">
     <div class="popup__container">
       <button class="popup__close-button" type="button"></button>
       <img class="popup__image" src="#" alt="#">
       <p class="popup__paragraph"></p>
+    </div>
+  </div>
+  <div class="popup popup_content_delete-popup">
+    <div class="popup__container">
+      <button class="popup__close-button" type="button"></button>
+      <form class="form form_place_delete-popup" novalidate>
+        <p class="form__heading form__heading_place_delete-popup">Вы уверены?</p>
+          <fieldset class="form__fieldset">
+            <button class="form__save-button form__save-button_content_delete-popup" type="submit">Да</button>
+          </fieldset> 
+      </form>
     </div>
   </div>
   <template id="elements">
@@ -71,7 +101,10 @@
         </div>
         <div class="element__info">
           <h3 class="element__name"></h3>
-          <button class="element__like-button" type="button"></button>
+          <div class="element__like-container">
+            <button class="element__like-button" type="button"></button>
+            <span class="element__likes-counter"></span>
+          </div>
         </div>
         <button class="element__delete-icon"></button>
       </div>
