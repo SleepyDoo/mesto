@@ -23,24 +23,24 @@ import {
   formsSettings} from '../utils/constants.js'
 import Popup from "../components/Popup.js";
 
-
 // сервер
+
+let userId;
 
 const api = new Api('https://mesto.nomoreparties.co/v1/cohort-32', 
     {authorization: 'e018c56f-d4b3-4bdf-9daa-134c345b8c23',
     'Content-Type': 'application/json'})
 
-api.getUserInfo()
-.then((data) => {
-  profileBio.setUserInfo(data);
-  profileBio.setAvatar(data);
-  console.log(data)
-})
-.catch((err) => {
-  console.log(err);
-});
-
-
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    profileBio.setUserInfo(userData);
+    profileBio.setAvatar(userData);
+    userId = userData._id;
+    cardList.renderItems(cards);
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 // Био профиля
 
@@ -128,22 +128,22 @@ saveButton.addEventListener('click', () => {
 })
 }
 
-deletionPopup.setEventListeners;
+deletionPopup.setEventListeners();
 
-function likeCard() {
-  api.setLike(this._cardId)
+function likeCard(card) {
+  api.setLike(card.cardId)
   .then((res) => {
-    this._likesContainer.textContent = res.likes.length;
+    card.likes = res.likes;
   })
   .catch((err) => {
     console.log(err);
   });
 }
 
-function unlikeCard() {
-  api.unlike(this._cardId)
+function unlikeCard(card) {
+  api.unlike(card.cardId)
   .then((res) => {
-    this._likesContainer.textContent = res.likes.length;
+    card.likes = res.likes;
   })
   .catch((err) => {
     console.log(err);
@@ -153,7 +153,7 @@ function unlikeCard() {
 
 
 function generateCard(item) {
-  const card = new Card(item, elementsTemplate, handleCardClick, handleCardDeletion, likeCard, unlikeCard);
+  const card = new Card(item, userId, elementsTemplate, handleCardClick, handleCardDeletion, likeCard, unlikeCard);
   return card.createCard();
 }
 
@@ -165,13 +165,7 @@ const cardList = new Section({
 },
   elements);
 
-api.getInitialCards()
-.then((data) => {
-  cardList.renderItems(data);
-})
-.catch((err) => {
-  console.log(err);
-});
+
 
   
 const popupWithImage = new PopupWithImage(popupImage);
