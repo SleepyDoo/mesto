@@ -25,10 +25,6 @@ export default class Api {
             headers: this._headers
           })
           .then(this._getResult)
-          // .then((data) => {
-          //   document.querySelector('.element__likes-counter').textContent = data.likes.length;
-          //   console.log(data)
-          // })
       }
 
       editProfileBio(data) {

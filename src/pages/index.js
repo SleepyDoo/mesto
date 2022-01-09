@@ -39,8 +39,6 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     profileBio.setUserInfo(userData);
     profileBio.setAvatar(userData);
     userId = userData._id;
-    console.log(userData._id)
-    console.log(userId)
     cardList.renderItems(cards);
   })
   .catch((err) => {

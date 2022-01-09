@@ -27,14 +27,12 @@ export default class Card {
       .finally(() => {
         this._renderLikes();
       });
-      console.log(this.likes)
     }
     else {
       this._like(this)
       .finally(() => {
         this._renderLikes();
       });
-      console.log(this.likes)
     }
 
   }
