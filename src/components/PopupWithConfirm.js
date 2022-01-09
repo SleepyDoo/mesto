@@ -5,27 +5,8 @@ export default class PopupWithConfirm extends Popup {
         super(popup),
         this._popup = popup,
         this._saveButton = this._popup.querySelector('.form__save-button'),
-        this._submitButtonText = 'ДАААА!!!!!!'
-        // this._callback = callback,
-        // this._callback = this._callback.bind(this)
+        this._submitButtonText = this._saveButton.textContent
     }
-
-    // open() {
-    //     super.open();
-    //     this._submitButton.onclick = this._action
-
-
-    //     this._saveButton.addEventListener('submit', () => {
-    //         this._action();
-    //     })
-    // }
-
-    // close() {
-    //     super.close();
-    //     this._saveButton.removeEventListener('submit', () => {
-    //         this._action();
-    //     })
-    // }
 
     setCallback(callback) {
         this._callback = callback
@@ -35,29 +16,28 @@ export default class PopupWithConfirm extends Popup {
     
 
     setEventListeners() {
-        this._saveButton.addEventListener('click', this._submitEvtHandler);    
+        this._saveButton.onclick = (evt) => this._submitEvtHandler(evt);    
         super.setEventListeners();
     }
 
-    // renderLoading(isLoading) {
-    //     if(isLoading) { 
-    //       this._saveButton.textContent = 'Сохранение...';
-    //     }
-    //     else {
-    //       this._saveButton.textContent = this._submitButtonText;
-    //     }
-    //   }
+    renderLoading(isLoading) {
+        if(isLoading) { 
+          this._saveButton.textContent = 'Сохранение...';
+        }
+        else {
+          this._saveButton.textContent = this._submitButtonText;
+        }
+      }
 
       _submitEvtHandler(evt) {
-          console.log(this);
+        this.renderLoading(true);
         evt.preventDefault();
-        // this._saveButton.textContent = 'Сохранение...';
         this._callback()
-        .then(() => {
-            this.close();
-        })
+        // .then(() => {
+        //     this.close();
+        // })
         .finally(() => {
-        // this._saveButton.textContent = this._submitButtonText;
+        this.renderLoading(false)
         })
       }
 

@@ -37,8 +37,6 @@ export default class Card {
       console.log(this.likes)
     }
 
-    
-
   }
 
   _renderLikes() {

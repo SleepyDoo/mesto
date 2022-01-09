@@ -20,9 +20,11 @@ import {
   newCardPopup,
   newCardForm,
   popupImage,
-  formsSettings} from '../utils/constants.js'
+  formsSettings,
+  editAvatarPopup,
+  newAvatarForm
+} from '../utils/constants.js'
 import PopupWithConfirm from "../components/PopupWithConfirm.js";
-
 
 // сервер
 
@@ -75,7 +77,7 @@ editButton.addEventListener('click', function() {
   popupBioClass.open();
 });
 
-const editAvatarPopup = document.querySelector('.popup_content_new-avatar');
+
 
 const editAvatarPopupClass = new PopupWithForm(editAvatarPopup, {submitCallback: (data) => {
   editAvatarPopupClass.renderLoading(true);
@@ -96,7 +98,7 @@ const editAvatarPopupClass = new PopupWithForm(editAvatarPopup, {submitCallback:
 }
 })
 
-const newAvatarForm = document.querySelector('.form_place_new-avatar');
+
 
 editAvatarPopupClass.setEventListeners();
 
@@ -126,22 +128,6 @@ enableValidation(formsSettings);
 
 
 // Работа с карточками
-// function action(data) {
-
-//   deletionPopup.renderLoading(true);
-//   api.removeCard(data)
-//     .then(() => {
-//       card.deleteCard();
-//       deletionPopup.close();
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     })
-//     .finally(() => {
-      
-//       deletionPopup.renderLoading(false);
-//     });
-// }
 
 const deletionPopup = new PopupWithConfirm(document.querySelector('.popup_content_delete-popup'));
 
@@ -154,11 +140,13 @@ function cardDeletion() {
   return api.removeCard(card.cardId)
   .then(() => {
     card.deleteCard()
+    deletionPopup.close();
   })
   .catch((err) => {
     console.log(err);
   });
   }
+
   deletionPopup.setCallback(cardDeletion);
   deletionPopup.open();
 }
@@ -185,11 +173,6 @@ function unlikeCard(card) {
   });
 }
 
-// function handleDeletion(item) {
-//   deletionPopup.open(item);
-// }
-
-
 function generateCard(item) {
   const card = new Card(item, userId, elementsTemplate, handleCardClick, handleCardDeletion, likeCard, unlikeCard);
   return card.createCard();
@@ -203,14 +186,6 @@ const cardList = new Section({
 },
   elements);
 
-
-  // function deleteCard(id) {
-  //   api.removeCard(id)
-  //   .then(() => {
-  //     card.deleteCard();
-  //   })
-  // }
-  
 const popupWithImage = new PopupWithImage(popupImage);
 
 popupWithImage.setEventListeners();
@@ -224,6 +199,7 @@ const newCardPopupClass = new PopupWithForm(newCardPopup, {submitCallback: (data
   api.addNewCard(data)
   .then((res) => {
     cardList.renderItems([res]);
+    newCardPopupClass.close();
   })
   .catch((err) => {
     newCardPopupClass.showError(err);
@@ -232,7 +208,7 @@ const newCardPopupClass = new PopupWithForm(newCardPopup, {submitCallback: (data
     newCardPopupClass.renderLoading(false);
   })
   
-  newCardPopupClass.close();
+  
 }});
 
 newCardPopupClass.setEventListeners();

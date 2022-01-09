@@ -1,29 +1,3 @@
-export const initialCards = [
-    {
-      name: 'Котик',
-      link: 'https://images.unsplash.com/photo-1596854273338-cbf078ec7071?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'
-    },
-    {
-      name: 'Коала',
-      link: 'https://images.unsplash.com/photo-1553445297-8bfd1c0ecfd8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80'
-    },
-    {
-      name: 'Крыски',
-      link: 'https://images.unsplash.com/photo-1575485670503-d039c615492e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80'
-    },
-    {
-      name: 'Песик',
-      link: 'https://images.unsplash.com/photo-1543523195-e0613799d7ad?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80'
-    },
-    {
-      name: 'Хорек',
-      link: 'https://images.unsplash.com/photo-1615087240969-eeff2fa558f2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80'
-    },
-    {
-      name: 'Панда',
-      link: 'https://images.unsplash.com/photo-1525382455947-f319bc05fb35?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=896&q=80'
-    }
-  ];
   export const elementsTemplate = document.querySelector('#elements').content;
   export const elements = document.querySelector('.elements');
   export const popupBio = document.querySelector('.popup_content_bio');
@@ -38,6 +12,9 @@ export const initialCards = [
   export const newCardPopup = document.querySelector('.popup_content_element');
   export const newCardForm = document.querySelector('form[name=new-card-form]');
   export const popupImage = document.querySelector('.popup_content_big-image');
+
+  export const editAvatarPopup = document.querySelector('.popup_content_new-avatar');
+  export const newAvatarForm = document.querySelector('.form_place_new-avatar');
 
   export const formsSettings = {
     formSelector: '.form',
