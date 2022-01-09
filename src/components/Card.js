@@ -20,17 +20,16 @@ export default class Card {
   }
 
   _handleLikes() {
-    this._renderLikes();
 
     if (this.likes.some(user => {return user._id === this._myId}, this)) {
       this._unlike(this)
-      .finally(() => {
+      .then(() => {
         this._renderLikes();
       });
     }
     else {
       this._like(this)
-      .finally(() => {
+      .then(() => {
         this._renderLikes();
       });
     }
