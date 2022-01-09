@@ -54,7 +54,8 @@ export default class Api {
         })
         .then(this._getResult)
       }
-
+      qwerty = () => this.addNewCard()
+      
       removeCard(id) {
         return fetch(`${this._url}/cards/${id}`, {
           method: 'DELETE',

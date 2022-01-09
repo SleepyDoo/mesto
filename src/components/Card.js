@@ -19,38 +19,31 @@ export default class Card {
     this._unlike = unlike
   }
 
-  _placeLike() {
-    this._like(this);
-  }
-
-  _deleteLike() {
-    this._unlike(this);
-  }
-
-  _isLiked() {
-
-    if (this.likes.some(user => user._id === this._myId)) {
-
-      this.likeButton.classList.add('element__like-button_active')
-
-    }
-
-  }
-
   _handleLikes() {
-    if (this.likes.some(user => user._id === this._myid)) {
-      this._unlike(this);
+    this._renderLikes();
+
+    if (this.likes.some(user => {return user._id === this._myId}, this)) {
+      this._unlike(this)
+      .finally(() => {
+        this._renderLikes();
+      });
       console.log(this.likes)
     }
     else {
-      this._like(this);
+      this._like(this)
+      .finally(() => {
+        this._renderLikes();
+      });
       console.log(this.likes)
     }
+
+    
+
   }
 
   _renderLikes() {
 
-      if (this.likes.some(user => user._id === this._myid)) {
+      if (this.likes.some(user => {return user._id === this._myId}, this)) {
 
         if (!this.likeButton.classList.contains('element__like-button_active')) {
           this.likeButton.classList.add('element__like-button_active');
@@ -59,23 +52,14 @@ export default class Card {
       } else {
 
         if (this.likeButton.classList.contains('element__like-button_active')) {
-          this._unlike(this);
-          this.likeButton.classList.delete('element__like-button_active');
+          this.likeButton.classList.remove('element__like-button_active');
         }
 
       }
 
       this.likesContainer.textContent = this.likes.length;
   }
-
-  _setLikes() {
-
-    this._isLiked();
-
-    this.likesContainer.textContent = this.likes.length;
-  }
-
-  _deleteCard() {
+  deleteCard() {
       this._deleteButton.closest('.element').remove();
   }
 
@@ -92,7 +76,7 @@ export default class Card {
     })
 
     this._deleteButton.addEventListener('click', () => {
-      this._handleCardDeletion();
+      this._handleCardDeletion(this);
     })
 
 
@@ -115,11 +99,7 @@ export default class Card {
 
     this._renderLikes();
 
-    // this.likesContainer.textContent = this._likes.length;
-    
-    // this._setLikes();
-
-    // this._isLiked();
+    this._element.id = this.cardId;
 
     return this._element;
   }

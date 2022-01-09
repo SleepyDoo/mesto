@@ -21,7 +21,8 @@ import {
   newCardForm,
   popupImage,
   formsSettings} from '../utils/constants.js'
-import Popup from "../components/Popup.js";
+import PopupWithConfirm from "../components/PopupWithConfirm.js";
+
 
 // сервер
 
@@ -36,24 +37,32 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     profileBio.setUserInfo(userData);
     profileBio.setAvatar(userData);
     userId = userData._id;
+    console.log(userData._id)
+    console.log(userId)
     cardList.renderItems(cards);
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
   });
+
 
 // Био профиля
 
 const profileBio = new UserInfo({nameElement: profileName, descriptionElement: profileDescription, avatarElement: document.querySelector('.profile__avatar')});
 const popupBioClass = new PopupWithForm(popupBio, {submitCallback: (data) => {
   popupBioClass.renderLoading(true);
-  profileBio.setUserInfo(data);
   api.editProfileBio(data)
+  .then((data) => {
+    profileBio.setUserInfo(data);
+    popupBioClass.close();
+  })
   .catch((err) => {
     popupBioClass.showError(err);
   })
-  .finally(popupBioClass.renderLoading(false))
-  popupBioClass.close();
+  .finally(() => {
+    popupBioClass.renderLoading(false);
+  })
+  
 }})
 
 popupBioClass.setEventListeners();
@@ -74,19 +83,25 @@ const editAvatarPopupClass = new PopupWithForm(editAvatarPopup, {submitCallback:
   api.setAvatar(data)
   .then((res) => {
     profileBio.setAvatar(res);
+    editAvatarPopupClass.close();
   })
   .catch((err) => {
     editAvatarPopupClass.showError(err);
   })
-  .finally( editAvatarPopupClass.renderLoading(false));
+  .finally(() => {
+    editAvatarPopupClass.renderLoading(false);
+  });
 
-  editAvatarPopupClass.close();
+  
 }
 })
+
+const newAvatarForm = document.querySelector('.form_place_new-avatar');
 
 editAvatarPopupClass.setEventListeners();
 
 document.querySelector('.profile__avatar-edit-button').addEventListener('click', () => {
+  formValidators[newAvatarForm.name].resetValidation();
   editAvatarPopupClass.open();
 })
 
@@ -111,27 +126,47 @@ enableValidation(formsSettings);
 
 
 // Работа с карточками
+// function action(data) {
 
-const deletionPopup = new Popup(document.querySelector('.popup_content_delete-popup'));
+//   deletionPopup.renderLoading(true);
+//   api.removeCard(data)
+//     .then(() => {
+//       card.deleteCard();
+//       deletionPopup.close();
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     })
+//     .finally(() => {
+      
+//       deletionPopup.renderLoading(false);
+//     });
+// }
 
-function handleCardDeletion() {
-deletionPopup.open();
-const saveButton = document.querySelector('.form__save-button_content_delete-popup');
-saveButton.addEventListener('click', () => {
-  api.removeCard(this._cardId)
-  .then(this._deleteCard())
+const deletionPopup = new PopupWithConfirm(document.querySelector('.popup_content_delete-popup'));
+
+deletionPopup.setEventListeners();
+
+
+function handleCardDeletion(card) {
+
+function cardDeletion() {
+  return api.removeCard(card.cardId)
+  .then(() => {
+    card.deleteCard()
+  })
   .catch((err) => {
     console.log(err);
   });
-  
-  deletionPopup.close()
-})
+  }
+  deletionPopup.setCallback(cardDeletion);
+  deletionPopup.open();
 }
 
 deletionPopup.setEventListeners();
 
 function likeCard(card) {
-  api.setLike(card.cardId)
+  return api.setLike(card.cardId)
   .then((res) => {
     card.likes = res.likes;
   })
@@ -141,7 +176,7 @@ function likeCard(card) {
 }
 
 function unlikeCard(card) {
-  api.unlike(card.cardId)
+  return api.unlike(card.cardId)
   .then((res) => {
     card.likes = res.likes;
   })
@@ -150,6 +185,9 @@ function unlikeCard(card) {
   });
 }
 
+// function handleDeletion(item) {
+//   deletionPopup.open(item);
+// }
 
 
 function generateCard(item) {
@@ -166,7 +204,12 @@ const cardList = new Section({
   elements);
 
 
-
+  // function deleteCard(id) {
+  //   api.removeCard(id)
+  //   .then(() => {
+  //     card.deleteCard();
+  //   })
+  // }
   
 const popupWithImage = new PopupWithImage(popupImage);
 
@@ -185,7 +228,9 @@ const newCardPopupClass = new PopupWithForm(newCardPopup, {submitCallback: (data
   .catch((err) => {
     newCardPopupClass.showError(err);
   })
-  .finally(newCardPopupClass.renderLoading(false))
+  .finally(() => {
+    newCardPopupClass.renderLoading(false);
+  })
   
   newCardPopupClass.close();
 }});
